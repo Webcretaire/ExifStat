@@ -1,0 +1,7 @@
+/.vscode/
+/.idea/
+/cmake-build-debug/
+/CMakeFiles/
+/CMakeCache.txt
+/ExifStat**
+/cmake_install.cmake
