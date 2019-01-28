@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
             int i;
             for (i = 0; i < percentage / 2; i++)cout << "*";
             for (; i < 50; i++)cout << " ";
-            cout << "] " << percentage << "% (" << it.second << ")\t ← " << it.first << endl;
+            cout << "] " << percentage << "% (" << it.second << ")  ←  " << it.first << endl;
         }
     }
 
