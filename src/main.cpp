@@ -6,6 +6,7 @@
 #include "../cpp_exiftool/inc/TagInfo.h"
 #include <map>
 #include <cmath>
+#include <set>
 
 using namespace std;
 
@@ -130,7 +131,7 @@ int main(int argc, char *argv[]) {
     }
 
     for (auto &ex : histogram) {
-        cout << ex.first << " : " << endl;
+        cout << endl << ex.first << " : " << endl;
 
         float sum = 0.0f;
 
@@ -138,16 +139,22 @@ int main(int argc, char *argv[]) {
             sum += it.second;
         }
 
-        for (auto &it : ex.second) {
-            int percentage = round(100.0f * it.second / sum);
-            cout << "  " << it.first << " → " << percentage << "% (" << it.second << ')' << endl
-                 << "\t\t\t[";
-            int i;
-            for (i = 0; i < percentage / 2; i++)cout << '*';
-            for (; i < 50; i++)cout << ' ';
-            cout << ']' << endl;
-        }
+        typedef function<bool(pair<string, int>, pair<string, int>)> Comparator;
 
+        Comparator compFunctor = [](pair<string, int> e1, pair<string, int> e2) {
+            return e1.second > e2.second;
+        };
+
+        set<pair<string, int>, Comparator> orderedSet(ex.second.begin(), ex.second.end(), compFunctor);
+
+        for (auto &it : orderedSet) {
+            int percentage = round(100.0f * it.second / sum);
+            cout << "[";
+            int i;
+            for (i = 0; i < percentage / 2; i++)cout << "*";
+            for (; i < 50; i++)cout << " ";
+            cout << "] " << percentage << "% (" << it.second << ")\t ← " << it.first << endl;
+        }
     }
 
     return 0;
